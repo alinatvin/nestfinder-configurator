@@ -211,7 +211,7 @@ onBeforeUnmount(() => {
   .dialog__title { font-size: 22px; }
   .rows { padding: 0 20px; }
   .row { min-height: 52px; }
-  .dialog__foot { padding: 14px 20px calc(24px + env(safe-area-inset-bottom)); gap: 10px; }
+  .dialog__foot { padding: 14px 20px max(16px, env(safe-area-inset-bottom)); gap: 10px; }
   .total__value { font-size: 22px; }
 }
 </style>

@@ -281,7 +281,9 @@ onMounted(() => syncScroll(true))
   .panel__title { font-size: 24px; }
   .panel__hint { font-size: 13px; }
   .panel__cards { padding: 0 12px 12px; position: relative; }
-  .panel__foot { padding: 8px 16px calc(24px + env(safe-area-inset-bottom)); }
+  /* Bottom gap = the larger of 16px and the system inset (iPhone home indicator ≈ 34px,
+     Android gesture bar), not their sum — summed, the button floated ~58px above the edge. */
+  .panel__foot { padding: 8px 16px max(16px, env(safe-area-inset-bottom)); }
 
   .thumb { width: 44px; height: 44px; }
   .thumb-dot { width: 44px !important; height: 44px !important; }
