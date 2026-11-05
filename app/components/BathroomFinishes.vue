@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { state, bathRows, bathFinishes, setBathFinish, toggleSameFinish } = useConfigurator()
 const labelId = useId()
+const { t } = useI18n()
 </script>
 
 <template>
@@ -8,7 +9,7 @@ const labelId = useId()
     <!-- rows swap between "per bathroom" and "All bathrooms" -->
 
     <div class="same">
-      <span :id="labelId" class="same__label">Same finish in all bathrooms</span>
+      <span :id="labelId" class="same__label">{{ t('baths.sameFinish') }}</span>
       <button
         type="button"
         role="switch"
@@ -81,7 +82,7 @@ const labelId = useId()
   transition: background-color .15s;
 }
 .switch[aria-checked='true'] { background: var(--c-accent); }
-.switch[aria-checked='true'] .switch__knob { transform: translateX(20px); }
+.switch[aria-checked='true'] .switch__knob { transform: translateX(calc(20px * var(--dir))); }
 .switch__knob {
   transition: transform .22s cubic-bezier(.22, 1, .36, 1);
   width: 26px;
@@ -116,7 +117,7 @@ const labelId = useId()
 .row__text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
 .row__label { font-size: 15px; font-weight: 600; }
 .row__value { font-size: 13px; color: var(--c-muted); }
-.row__dots { display: flex; gap: 14px; flex-shrink: 0; padding-right: 5px; }
+.row__dots { display: flex; gap: 14px; flex-shrink: 0; padding-inline-end: 5px; }
 
 .dot {
   width: 44px;

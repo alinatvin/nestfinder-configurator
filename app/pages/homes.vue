@@ -1,12 +1,13 @@
 <script setup lang="ts">
-useHead({ title: 'All homes · FindNido' })
+const { t } = useI18n()
+useHead({ title: computed(() => `${t('homes.title')} · NestFinder`) })
 </script>
 
 <template>
   <div class="placeholder">
-    <h1>All homes</h1>
-    <p>This screen ("2 · Homes") is not part of the rooms v3 handoff yet.</p>
-    <NuxtLink to="/">Back to the configurator</NuxtLink>
+    <h1>{{ t('homes.title') }}</h1>
+    <p>{{ t('homes.text') }}</p>
+    <NuxtLink to="/">{{ t('homes.back') }}</NuxtLink>
   </div>
 </template>
 

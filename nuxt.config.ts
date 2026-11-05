@@ -7,7 +7,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
-      title: 'Configure Saqr · FindNido',
+      title: 'Configure Saqr · NestFinder',
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },
         { name: 'theme-color', content: '#F6F6F4' }
@@ -17,7 +17,8 @@ export default defineNuxtConfig({
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         {
           rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&family=Raleway:wght@500..700&display=swap'
+          // IBM Plex Sans Arabic: Raleway / Inter have no Arabic glyphs (used when <html lang="ar">)
+          href: 'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Inter:opsz,wght@14..32,400..700&family=Raleway:wght@500..700&display=swap'
         }
       ]
     }

@@ -88,6 +88,16 @@ export const extras: Extra[] = [
   { id: 'ext2', group: 'ext', name: 'Garage / 2-Car Pergola', sub: 'Parking for two vehicles', amount: 64_950, photo: '/images/extras/garage.jpg', desc: 'Two-car parking structure.' }
 ]
 
+/**
+ * Extras that work as a pair: at least one of the two always stays selected
+ * (same behaviour as heating / ventilation on configurator.ibnibaytak.ae).
+ * Both can be on. Turning one off is fine while the other is on; turning off
+ * the only one that is on switches the other one on instead.
+ */
+export const requiredPairs: [string, string][] = [
+  ['int1', 'int3'] // Underfloor Heating ↔ Dual-Flow Ventilation
+]
+
 export const roomPanoNames: Record<RoomId, string> = {
   layout: 'Living room',
   kitchen: 'Kitchen',

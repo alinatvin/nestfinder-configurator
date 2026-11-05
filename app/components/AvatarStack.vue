@@ -101,8 +101,10 @@ const faceStyle = (it: StackItem) => ({
   align-items: center;
   justify-content: center;
   /* slot changes (an item added/removed before this one) */
-  transition: left var(--av-move) var(--ease-spring-soft);
+  transition: left var(--av-move) var(--ease-spring-soft), right var(--av-move) var(--ease-spring-soft);
 }
+/* right-to-left: the stack grows from the right edge */
+[dir='rtl'] .av { left: auto; right: calc(var(--i) * var(--av-step)); }
 .av--plus { background: var(--c-accent-soft); color: var(--c-accent); box-shadow: none; }
 .av__face { position: absolute; inset: 0; border-radius: inherit; }
 .av__info {
@@ -120,10 +122,12 @@ const faceStyle = (it: StackItem) => ({
   transition:
     transform var(--av-move) var(--ease-spring-soft),
     opacity .2s ease,
-    left var(--av-move) var(--ease-spring-soft);
+    left var(--av-move) var(--ease-spring-soft),
+    right var(--av-move) var(--ease-spring-soft);
 }
 .av-enter-from {
-  transform: translateX(-10px) scale(.4);
+  /* nudge from the start side: from the left in LTR, from the right in RTL */
+  transform: translateX(calc(-10px * var(--dir))) scale(.4);
   opacity: 0;
 }
 

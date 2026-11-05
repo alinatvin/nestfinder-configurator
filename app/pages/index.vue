@@ -5,11 +5,12 @@ import type { RoomId } from '~/data/saqr'
 import type { StackItem } from '~/types/stack'
 
 const {
-  state, model, currentSize, kitchenFinish, kitchenFinishes, bathThumbs, bathsSummary,
-  chosenExtras, extrasSummary, formatArea, toggleRoom, setKitchen, openSummary
+  state, modelName, currentSize, kitchenFinish, kitchenFinishes, bathThumbs, bathsSummary,
+  chosenExtras, extrasSummary, finishName, formatArea, toggleRoom, setKitchen, openSummary
 } = useConfigurator()
+const { t } = useI18n()
 
-useHead({ title: `Configure ${model.name} · FindNido` })
+useHead({ title: computed(() => t('meta.title', { name: modelName.value })) })
 
 // Deep-link a card: /?room=layout | kitchen | baths | extras | none
 const route = useRoute()
@@ -94,16 +95,16 @@ onMounted(() => syncScroll(true))
     <main class="layout">
       <ViewStage class="layout__stage" />
 
-      <aside class="panel" aria-label="Configure your home">
+      <aside class="panel" :aria-label="t('common.configureAria')">
         <span class="panel__grabber only-mobile" aria-hidden="true" />
         <div class="panel__head">
-          <h1 class="panel__title">{{ model.name }}</h1>
-          <span class="panel__hint only-desktop">Choose a part of the home to change it.</span>
-          <span class="panel__hint only-mobile">Tap a part to change it</span>
+          <h1 class="panel__title">{{ modelName }}</h1>
+          <span class="panel__hint only-desktop">{{ t('common.chooseHint') }}</span>
+          <span class="panel__hint only-mobile">{{ t('common.tapHint') }}</span>
         </div>
 
         <div ref="scroller" class="panel__cards">
-          <ConfigCard id="layout" title="Size" :open="state.room === 'layout'" @toggle="toggleRoom('layout')">
+          <ConfigCard id="layout" :title="t('cards.layout')" :open="state.room === 'layout'" @toggle="toggleRoom('layout')">
             <template #thumb>
               <span class="thumb thumb--icon">
                 <span class="swap"><Transition name="swap"><span :key="currentSize.code" class="swap__item">{{ currentSize.code }}</span></Transition></span>
@@ -125,17 +126,17 @@ onMounted(() => syncScroll(true))
             <SizePicker />
           </ConfigCard>
 
-          <ConfigCard id="kitchen" title="Kitchen" :open="state.room === 'kitchen'" @toggle="toggleRoom('kitchen')">
+          <ConfigCard id="kitchen" :title="t('cards.kitchen')" :open="state.room === 'kitchen'" @toggle="toggleRoom('kitchen')">
             <template #thumb>
               <AvatarStack :items="kitchenStack" />
             </template>
             <template #subtitle>
-              <span class="swap"><Transition name="swap"><span :key="kitchenFinish.name" class="swap__item">{{ kitchenFinish.name }}</span></Transition></span>
+              <span class="swap"><Transition name="swap"><span :key="finishName(kitchenFinish)" class="swap__item">{{ finishName(kitchenFinish) }}</span></Transition></span>
             </template>
-            <SwatchGrid v-model="kitchen" :finishes="kitchenFinishes" label="Kitchen finish" />
+            <SwatchGrid v-model="kitchen" :finishes="kitchenFinishes" :label="t('kitchen.finish')" />
           </ConfigCard>
 
-          <ConfigCard id="baths" title="Bathrooms" :open="state.room === 'baths'" @toggle="toggleRoom('baths')">
+          <ConfigCard id="baths" :title="t('cards.baths')" :open="state.room === 'baths'" @toggle="toggleRoom('baths')">
             <template #thumb>
               <AvatarStack :items="bathStack" />
             </template>
@@ -145,7 +146,7 @@ onMounted(() => syncScroll(true))
             <BathroomFinishes />
           </ConfigCard>
 
-          <ConfigCard id="extras" title="Extras" :open="state.room === 'extras'" @toggle="toggleRoom('extras')">
+          <ConfigCard id="extras" :title="t('cards.extras')" :open="state.room === 'extras'" @toggle="toggleRoom('extras')">
             <template #thumb>
               <AvatarStack :items="extrasStack" />
             </template>
@@ -158,7 +159,7 @@ onMounted(() => syncScroll(true))
 
         <div class="panel__foot">
           <Motion as="button" type="button" class="cta" :while-press="press" @click="openSummary">
-            Review and get quote<AppIcon name="arrowRight" :size="16" class="cta__arrow" />
+            {{ t('common.review') }}<AppIcon name="arrowRight" :size="16" class="cta__arrow" />
           </Motion>
         </div>
       </aside>
@@ -233,7 +234,7 @@ onMounted(() => syncScroll(true))
 .cta { transition: background-color .2s; }
 .cta:hover { background: var(--c-accent-hover); }
 .cta__arrow { transition: transform .25s cubic-bezier(.22, 1, .36, 1); }
-.cta:hover .cta__arrow { transform: translateX(3px); }
+.cta:hover .cta__arrow { transform: translateX(calc(3px * var(--dir))); }
 
 .thumb {
   width: 48px;

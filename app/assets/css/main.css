@@ -23,6 +23,9 @@
   --f-display: Raleway, system-ui, sans-serif;
   --f-body: Inter, system-ui, sans-serif;
 
+  /* +1 left-to-right, −1 right-to-left: multiply horizontal nudges (translateX) by this */
+  --dir: 1;
+
   /* Radii */
   --r-stage: 24px;
   --r-card: 18px;
@@ -40,6 +43,18 @@
    */
   --ease-spring-soft: linear(0, 0.034, 0.12, 0.234, 0.359, 0.484, 0.601, 0.705, 0.793, 0.865, 0.922, 0.965, 0.996, 1.017, 1.03, 1.036, 1.038, 1.037, 1.034, 1.03, 1.025, 1.02, 1.016, 1.012, 1.008, 1.005, 1.003, 1.001, 1, 0.999, 0.999, 0.999, 1);
 }
+
+/* ── Right-to-left (Arabic) ───────────────────────────────── */
+[dir='rtl'] { --dir: -1; }
+:root[lang='ar'] {
+  --f-display: 'IBM Plex Sans Arabic', Raleway, system-ui, sans-serif;
+  --f-body: 'IBM Plex Sans Arabic', Inter, system-ui, sans-serif;
+}
+/* Arabic script: no letter-spacing, a bit more line height for the taller glyphs */
+:root[lang='ar'] body { line-height: 1.5; letter-spacing: 0; }
+/* Direction-dependent icons (chevrons, arrows) point the other way in RTL.
+   `scale` (not `transform`) so it composes with hover nudges that use transform. */
+[dir='rtl'] .icon--dir { scale: -1 1; }
 
 *,
 *::before,

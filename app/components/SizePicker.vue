@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { press } from '~/utils/motion'
 const { state, sizes, formatArea, formatDelta, setSize } = useConfigurator()
+const { t } = useI18n()
 </script>
 
 <template>
@@ -18,7 +19,7 @@ const { state, sizes, formatArea, formatDelta, setSize } = useConfigurator()
     >
       <span class="size__code">{{ s.code }}</span>
       <span class="size__info">
-        <span class="size__title">Size {{ s.code }}</span>
+        <span class="size__title">{{ t('size.title', { code: s.code }) }}</span>
         <SizeSpecs compact :beds="s.beds" :baths="s.baths" :area="formatArea(s.area)" />
         <span class="size__price">{{ formatDelta(s.priceDelta) }}</span>
       </span>
@@ -40,8 +41,8 @@ const { state, sizes, formatArea, formatDelta, setSize } = useConfigurator()
       <span class="tile__code">{{ s.code }}</span>
       <!-- icons instead of "4 bd": same bed / bath glyphs as the card header -->
       <span class="tile__sub">
-        <span class="tile__spec"><AppIcon name="bed" :width="18" :height="12.6" />{{ s.beds }}<span class="sr-only"> bedrooms</span></span>
-        <span class="tile__spec"><AppIcon name="bath" :size="14" />{{ s.baths }}<span class="sr-only"> bathrooms</span></span>
+        <span class="tile__spec"><AppIcon name="bed" :width="18" :height="12.6" />{{ s.beds }}<span class="sr-only"> {{ t('common.bedrooms') }}</span></span>
+        <span class="tile__spec"><AppIcon name="bath" :size="14" />{{ s.baths }}<span class="sr-only"> {{ t('common.bathrooms') }}</span></span>
       </span>
     </Motion>
   </div>
@@ -59,7 +60,7 @@ const { state, sizes, formatArea, formatDelta, setSize } = useConfigurator()
   align-items: center;
   gap: 14px;
   color: var(--c-ink);
-  text-align: left;
+  text-align: start;
 }
 .size, .tile { transition: background-color .2s, box-shadow .2s, color .2s; }
 .size[aria-pressed='true'] { background: var(--c-accent-soft); box-shadow: inset 0 0 0 1.5px var(--c-accent); }

@@ -26,6 +26,8 @@ const props = withDefaults(defineProps<{ name: IconName; size?: number | string;
 })
 
 const icon = computed(() => icons[props.name])
+/** Icons that point somewhere get mirrored in right-to-left (see .icon--dir in main.css). */
+const directional = computed(() => props.name === 'back' || props.name === 'arrowRight')
 </script>
 
 <template>
@@ -35,6 +37,7 @@ const icon = computed(() => icons[props.name])
     :viewBox="icon.viewBox"
     aria-hidden="true"
     focusable="false"
+    :class="{ 'icon--dir': directional }"
     style="display: block; flex-shrink: 0"
   >
     <path v-for="(d, i) in icon.d" :key="i" fill="currentColor" :d="d" />

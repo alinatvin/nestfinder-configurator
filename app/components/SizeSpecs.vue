@@ -1,14 +1,15 @@
 <script setup lang="ts">
 withDefaults(defineProps<{ beds: number | string; baths: number | string; area: string; compact?: boolean }>(), { compact: false })
+const { t } = useI18n()
 </script>
 
 <template>
   <span class="specs" :class="{ 'specs--compact': compact }">
     <span class="spec">
-      <AppIcon name="bed" :width="compact ? 20 : 22" :height="compact ? 14 : 15.4" class="spec__icon" />{{ beds }}<span class="sr-only"> bedrooms</span>
+      <AppIcon name="bed" :width="compact ? 20 : 22" :height="compact ? 14 : 15.4" class="spec__icon" />{{ beds }}<span class="sr-only"> {{ t('common.bedrooms') }}</span>
     </span>
     <span class="spec">
-      <AppIcon name="bath" :size="compact ? 16 : 18" class="spec__icon" />{{ baths }}<span class="sr-only"> bathrooms</span>
+      <AppIcon name="bath" :size="compact ? 16 : 18" class="spec__icon" />{{ baths }}<span class="sr-only"> {{ t('common.bathrooms') }}</span>
     </span>
     <span class="spec spec--nowrap">
       <AppIcon name="area" :size="compact ? 14 : 16" class="spec__icon" />{{ area }}

@@ -4,6 +4,7 @@ import type { Finish } from '~/data/saqr'
 
 defineProps<{ finishes: Finish[]; label: string }>()
 const selected = defineModel<number>({ required: true })
+const { finishName } = useConfigurator()
 </script>
 
 <template>
@@ -20,7 +21,7 @@ const selected = defineModel<number>({ required: true })
     >
       <!-- selection = ring around the circle, same as the bathroom finishes -->
       <FinishDot :color="f.color" :texture="f.texture" :none="f.kind === 'none'" :size="56" class="swatch__dot" />
-      <span class="swatch__name">{{ f.name }}</span>
+      <span class="swatch__name">{{ finishName(f) }}</span>
     </Motion>
   </div>
 </template>
@@ -46,7 +47,8 @@ const selected = defineModel<number>({ required: true })
   color: var(--c-ink);
 }
 .swatch__dot { transition: box-shadow .2s; }
-.swatch[aria-pressed='true'] .swatch__dot { box-shadow: var(--ring-on); }.swatch__name { font-size: 14px; line-height: 1.25; color: var(--c-muted-strong); text-align: center; }
+.swatch[aria-pressed='true'] .swatch__dot { box-shadow: var(--ring-on); }
+.swatch__name { font-size: 14px; line-height: 1.25; color: var(--c-muted-strong); text-align: center; }
 .swatch[aria-pressed='true'] .swatch__name { font-weight: 600; color: var(--c-ink); }
 
 @media (max-width: 899.98px) {

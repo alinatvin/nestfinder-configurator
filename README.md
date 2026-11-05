@@ -1,4 +1,4 @@
-# FindNido · Saqr configurator (rooms v3)
+# NestFinder · Saqr configurator (rooms v3)
 
 Nuxt 4 + Vue 3 build of the **rooms v3** screens from the Claude Design canvas *Configurator redesign*.
 

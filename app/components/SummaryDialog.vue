@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { motionBase, motionSheet, press } from '~/utils/motion'
-const { state, model, summaryRows, openRoom, closeSummary } = useConfigurator()
+const { state, modelName, summaryRows, openRoom, closeSummary } = useConfigurator()
+const { t } = useI18n()
 
 const closeBtn = ref<HTMLButtonElement | null>(null)
 let returnFocus: HTMLElement | null = null
@@ -62,8 +63,8 @@ onBeforeUnmount(() => {
         :transition="isMobile ? motionSheet : motionBase"
       >
         <div class="dialog__head">
-          <h2 id="summary-title" class="dialog__title">Your {{ model.name }}</h2>
-          <button ref="closeBtn" type="button" class="close" aria-label="Close" @click="closeSummary">
+          <h2 id="summary-title" class="dialog__title">{{ t('common.yourModel', { name: modelName }) }}</h2>
+          <button ref="closeBtn" type="button" class="close" :aria-label="t('common.close')" @click="closeSummary">
             <AppIcon name="close" :size="20" />
           </button>
         </div>
@@ -92,16 +93,16 @@ onBeforeUnmount(() => {
                   <span v-if="r.price" class="row__price">{{ r.price }}</span>
                 </template>
               </span>
-              <button type="button" class="edit" @click="openRoom(r.room)">Edit</button>
+              <button type="button" class="edit" @click="openRoom(r.room)">{{ t('common.edit') }}</button>
             </dd>
           </div>
         </dl>
         <div class="dialog__foot">
           <div class="total">
-            <span class="total__label">Estimated total</span>
+            <span class="total__label">{{ t('common.estimatedTotal') }}</span>
             <PriceTotal class="total__value" />
           </div>
-          <Motion as="button" type="button" class="cta" :while-press="press">Request my quote</Motion>
+          <Motion as="button" type="button" class="cta" :while-press="press">{{ t('common.requestQuote') }}</Motion>
         </div>
       </Motion>
     </Motion>
@@ -157,7 +158,7 @@ onBeforeUnmount(() => {
 .row--multi .row__k { padding-top: 2px; }
 .row--multi .edit { margin-top: -4px; }
 .row__k { color: var(--c-muted); flex-shrink: 0; }
-.row__v { margin: 0; display: flex; align-items: center; gap: 10px; font-weight: 600; text-align: right; min-width: 0; }
+.row__v { margin: 0; display: flex; align-items: center; gap: 10px; font-weight: 600; text-align: end; min-width: 0; }
 .row--multi .row__v { align-items: flex-start; }
 .row__content { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; min-width: 0; }
 .row__line { display: flex; align-items: center; justify-content: flex-end; gap: 10px; min-width: 0; }

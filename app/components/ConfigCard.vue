@@ -1,12 +1,13 @@
 <script setup lang="ts">
 /**
  * Collapsible card for one part of the home (Size, Kitchen, Bathrooms, Extras).
- * `thumb` slot = round preview on the left, `subtitle` slot = second line, default slot = editor when open.
+ * `thumb` slot = round preview at the start (left in LTR, right in RTL), `subtitle` slot = second line, default slot = editor when open.
  */
 const props = defineProps<{ id: string; title: string; open: boolean }>()
 defineEmits<{ toggle: [] }>()
 
 const bodyId = computed(() => `card-body-${props.id}`)
+const { t } = useI18n()
 
 // The body is clipped unless it is fully open and settled: then tooltips inside may overflow.
 // Clipping starts the moment it begins to close, so collapsing content never spills over the cards below.
@@ -29,7 +30,7 @@ watch(() => props.open, () => { settled.value = false })
         <span class="card__sub"><slot name="subtitle" /></span>
       </span>
       <!-- Always in the layout (only faded) so the header text never re-wraps when the card opens -->
-      <span class="card__action" :class="{ 'card__action--hidden': open }" aria-hidden="true">Change</span>
+      <span class="card__action" :class="{ 'card__action--hidden': open }" aria-hidden="true">{{ t('common.change') }}</span>
     </button>
     <!--
       Height is animated with a CSS grid track (0fr ↔ 1fr), not JS height:auto.
@@ -67,12 +68,13 @@ watch(() => props.open, () => { settled.value = false })
   border: 0;
   border-radius: var(--r-card);
   background: transparent;
-  padding: 12px 14px 12px 12px;
+  padding-block: 12px;
+  padding-inline: 12px 14px;
   display: flex;
   align-items: center;
   gap: 14px;
   color: var(--c-ink);
-  text-align: left;
+  text-align: start;
 }
 .card__thumb { flex-shrink: 0; display: flex; align-items: center; }
 .card__text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
