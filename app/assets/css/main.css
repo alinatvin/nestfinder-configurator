@@ -1,0 +1,163 @@
+:root {
+  /* Colour tokens (from the v3 design) */
+  --c-bg: #F6F6F4;
+  --c-surface: #FFFFFF;
+  --c-ink: #16201C;
+  --c-muted: #5C6661;
+  --c-muted-strong: #3F4743;
+  --c-stage-ink: #4A524E;
+  --c-accent: #2B433A;
+  --c-accent-hover: #1C2D26;
+  --c-accent-soft: #E1E8E4;
+  --c-on-accent-muted: #DCE6E1;
+  --c-chip: #F0F1EF;
+  --c-tile: #F3F4F2;
+  --c-photo: #DFE3DF;
+  --c-switch-off: #C9CEC9;
+  --c-pano: #D6D9D5;
+  --c-plan: #EEF0ED;
+  --c-glass: rgba(255, 255, 255, .75);
+  --c-scrim: rgba(22, 32, 28, .35);
+
+  /* Type */
+  --f-display: Raleway, system-ui, sans-serif;
+  --f-body: Inter, system-ui, sans-serif;
+
+  /* Radii */
+  --r-stage: 24px;
+  --r-card: 18px;
+  --r-tile: 16px;
+  --r-btn: 14px;
+  --r-pill: 999px;
+
+  --ring-on: 0 0 0 3px #FFFFFF, 0 0 0 5px var(--c-accent);
+
+  /* Easing */
+  --ease-out-expo: cubic-bezier(.16, 1, .3, 1);
+  /*
+   * Soft spring (damping ratio 0.72): one small ~4% overshoot, no repeated bounces.
+   * Replaces Flutter's Curves.elasticOut (27% overshoot + wobble) that AvatarStack was ported with.
+   */
+  --ease-spring-soft: linear(0, 0.034, 0.12, 0.234, 0.359, 0.484, 0.601, 0.705, 0.793, 0.865, 0.922, 0.965, 0.996, 1.017, 1.03, 1.036, 1.038, 1.037, 1.034, 1.03, 1.025, 1.02, 1.016, 1.012, 1.008, 1.005, 1.003, 1.001, 1, 0.999, 0.999, 0.999, 1);
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body { margin: 0; }
+
+body {
+  background: var(--c-bg);
+  color: var(--c-ink);
+  font-family: var(--f-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--f-display);
+  font-weight: 550;
+  margin: 0;
+  color: var(--c-ink);
+}
+h1 { font-weight: 700; }
+
+a { color: var(--c-accent); }
+a:hover { color: var(--c-accent-hover); }
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  color: inherit;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.tex {
+  background-size: cover;
+  background-position: center;
+}
+
+/* "No finish" chip (e.g. Without kitchen): slash-circle icon on the light-green ground of the Extras "+" bubble */
+.finish-none {
+  background: var(--c-accent-soft) !important;
+  color: var(--c-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glass {
+  background: var(--c-glass);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+/*
+ * Expand / collapse without measuring: animate a grid track between 0fr and 1fr.
+ * Markup: <Transition name="expand"><div class="expand"><div class="expand__inner">…</div></div></Transition>
+ * Timing matches motionHeight in app/utils/motion.ts.
+ */
+.expand { display: grid; grid-template-rows: 1fr; }
+.expand__inner { min-height: 0; overflow: hidden; }
+
+/* Always clip while animating. Vue freezes a leaving element's classes, so a component's own
+   "settled → overflow: visible" class would otherwise stay on and the content would spill out. */
+.expand-enter-active > .expand__inner,
+.expand-leave-active > .expand__inner { overflow: hidden !important; }
+
+/* Open: height first, content fades in once there is room for it. */
+.expand-enter-active {
+  transition:
+    grid-template-rows .32s cubic-bezier(.4, 0, .2, 1),
+    opacity .22s ease .1s;
+}
+/* Close: content fades out quickly, then an empty box shrinks (no squashed content). */
+.expand-leave-active {
+  transition:
+    grid-template-rows .32s cubic-bezier(.4, 0, .2, 1),
+    opacity .12s ease;
+}
+.expand-enter-from,
+.expand-leave-to { grid-template-rows: 0fr; opacity: 0; }
+
+/*
+ * Value swap in place (a letter, a number, a line of text): old fades/slides up, new comes from below.
+ * Markup: <span class="swap"><Transition name="swap"><span :key="value" class="swap__item">…</span></Transition></span>
+ */
+.swap { display: grid; min-width: 0; max-width: 100%; }
+.swap__item { grid-area: 1 / 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.swap-enter-active,
+.swap-leave-active { transition: opacity .25s ease, transform .3s cubic-bezier(.16, 1, .3, 1); }
+.swap-enter-from { opacity: 0; transform: translateY(6px); }
+.swap-leave-to { opacity: 0; transform: translateY(-6px); }
+
+/* motion-v honours this via <MotionConfig reduced-motion="user">; this covers plain CSS transitions */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Show/hide helpers for the two layouts */
+@media (max-width: 899.98px) {
+  .only-desktop { display: none !important; }
+}
+@media (min-width: 900px) {
+  .only-mobile { display: none !important; }
+}
